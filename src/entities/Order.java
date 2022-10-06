@@ -4,8 +4,8 @@ public class Order {
     private int orderFree;
     private Load load;
 
-    public Order(Load load) {
-        this.orderFree = load.getWeight()*DeliveryCompany.pricePerKilogram;
+    public Order(int orderFree, Load load) {
+        this.orderFree = orderFree;
         this.load = load;
     }
 
