@@ -10,17 +10,23 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class DeliveryCompanyService {
-    private ArrayList<DeliveryCompany> deliveryCompanies;
+    private ArrayList<DeliveryCompany> deliveryCompanies = new ArrayList<>();
 
-    Scanner scannerS =  new Scanner(System.in);
-    Scanner scannerN =  new Scanner(System.in);
+
+    public void creatCustomer(Customer customer, String companyName){
+        deliveryCompanies.stream().filter(x -> x.getDeliveryCompanyName().equalsIgnoreCase(companyName)).findFirst().ifPresent(x -> x.setCustomer(customer));
+    }
 
     public void acceptOrder(Order order, String company, String customer){
-        Optional<DeliveryCompany> optional = deliveryCompanies.stream().filter(x -> x.getDeliveryCompanyName().equals(company)).findFirst();
+        Optional<DeliveryCompany> optional = deliveryCompanies.stream().filter(x -> x.getDeliveryCompanyName().equalsIgnoreCase(company)).findFirst();
 
-        if (order.getLoad().getHeight()*order.getLoad().getWidth() < DeliveryCompany.maxCapacityPerSquareMeter){
-            optional.ifPresent(x -> x.getCustomer().stream().filter(a -> a.getName().equals(customer)).findFirst().ifPresent(b -> b.addOrder(order)));
-        }
+        if (optional.isPresent()){
+            if (order.getLoad().getHeight()*order.getLoad().getWidth() < DeliveryCompany.maxCapacityPerSquareMeter){
+                boolean resultFindCustomer = optional.flatMap(x -> x.getCustomer().stream().filter(a -> a.getName().equals(customer)).findFirst()).isPresent();
+                if (resultFindCustomer) optional.flatMap(x -> x.getCustomer().stream().filter(a -> a.getName().equals(customer)).findFirst()).ifPresent(b -> b.addOrder(order));
+                else System.out.println("Customer l;ksajfnot found");
+            }else System.out.println("Company cannot accept this order!");
+        } else System.out.println("Company not found!");
     }
 
     public void createDeliveryCompany(String nameOfDeliveryCompany) {
@@ -36,11 +42,15 @@ public class DeliveryCompanyService {
         return totalFee;
     }
 
-    public static int getCompanyProfit(DeliveryCompany deliveryCompany) {
+    public static void getCompanyProfit(DeliveryCompany deliveryCompany) {
         int totalProfit = 0;
         for (Customer customer : deliveryCompany.getCustomer()) {
             totalProfit += getTotalFee(customer);
         }
-        return totalProfit;
+        System.out.println("Company total profit: "+totalProfit);
+    }
+
+    public ArrayList<DeliveryCompany> getCompanies(){
+        return deliveryCompanies;
     }
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class DeliveryCompany {
     private String deliveryCompanyName;
     public static final int pricePerKilogram = 10;
-    private ArrayList<Customer> customer;
+    private ArrayList<Customer> customer = new ArrayList<>();
     public static final int maxCapacityPerSquareMeter = 20;
 
     public DeliveryCompany(String deliveryCompanyName) {
@@ -28,8 +28,8 @@ public class DeliveryCompany {
         return customer;
     }
 
-    public void setCustomer(ArrayList<Customer> customer) {
-        this.customer = customer;
+    public void setCustomer(Customer customer) {
+        this.customer.add(customer);
     }
 
     public int getMaxCapacityPerSquareMeter() {

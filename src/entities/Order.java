@@ -1,20 +1,20 @@
 package entities;
 
 public class Order {
-    private int orderFree;
+    private int orderFee;
     private Load load;
 
-    public Order(int orderFree, Load load) {
-        this.orderFree = orderFree;
+    public Order(Load load) {
+        this.orderFee = load.getWeight() * DeliveryCompany.pricePerKilogram;
         this.load = load;
     }
 
-    public int getOrderFree() {
-        return orderFree;
+    public int getOrderFee() {
+        return orderFee;
     }
 
-    public void setOrderFree(int orderFree) {
-        this.orderFree = orderFree;
+    public void setOrderFee(int orderFree) {
+        this.orderFee = orderFree;
     }
 
     public Load getLoad() {
